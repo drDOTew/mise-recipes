@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Colors */
+  --color-primary: #1a1a18;
+  --color-accent: #C35D2A;
+  --color-bg: #FAFAF7;
+  --color-surface: #FFFFFF;
+  --color-border: #ebe8e0;
+  --color-border-light: #ddd;
+  --color-text-primary: #1a1a18;
+  --color-text-secondary: #666;
+  --color-text-muted: #888;
+  --color-text-disabled: #bbb;
+  --color-accent-bg: #f5ede6;
+  
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 100px;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text-primary font-body;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
