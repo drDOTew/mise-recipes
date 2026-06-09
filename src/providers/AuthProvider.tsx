@@ -51,6 +51,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(isFetchingUser);
   }, [data, isFetchingUser]);
 
+  function setTokenCookie(token: string) {
+    document.cookie = `token=${token}; path=/; Secure; SameSite=Lax`;
+  }
+
+  function clearTokenCookie() {
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  }
+
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: async (payload: LoginPayload) => {
@@ -58,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return response;
     },
     onSuccess: (data) => {
+      setTokenCookie(data.token);
       setUser(data.user);
       queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
     },
@@ -70,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return response;
     },
     onSuccess: (data) => {
+      setTokenCookie(data.token);
       setUser(data.user);
       queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
     },
@@ -81,6 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await api.post(endpoints.auth.logout);
     },
     onSuccess: () => {
+      clearTokenCookie();
       setUser(null);
       queryClient.clear();
     },
