@@ -21,6 +21,7 @@ interface AuthContextType {
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (data: { name: string }) => Promise<void>;
+  updatePassword: (data: { current_password: string; new_password: string; new_password_confirmation: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -109,6 +110,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  // Update password mutation
+  const updatePasswordMutation = useMutation({
+    mutationFn: async (data: { current_password: string; new_password: string; new_password_confirmation: string }) => {
+      await api.patch(endpoints.auth.password, data);
+    },
+  });
+
   const login = useCallback(
     async (payload: LoginPayload) => {
       await loginMutation.mutateAsync(payload);
@@ -134,6 +142,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [updateProfileMutation]
   );
 
+  const updatePassword = useCallback(
+    async (data: { current_password: string; new_password: string; new_password_confirmation: string }) => {
+      await updatePasswordMutation.mutateAsync(data);
+    },
+    [updatePasswordMutation]
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -144,6 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         register,
         logout,
         updateProfile,
+        updatePassword,
       }}
     >
       {children}

@@ -4,6 +4,7 @@ export const endpoints = {
     register: "/auth/register",
     logout: "/auth/logout",
     me: "/auth/me",
+    password: "/auth/password",
   },
   recipes: {
     list: "/recipes",

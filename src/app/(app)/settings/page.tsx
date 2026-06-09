@@ -11,10 +11,15 @@ import { useAuth } from "@/hooks/useAuth";
 type Tab = "perfil" | "contraseña" | "plan";
 
 export default function SettingsPage() {
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, updatePassword } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>("perfil");
   const [name, setName] = useState(user?.name || "");
   const [isSaving, setIsSaving] = useState(false);
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
   const handleSaveProfile = async () => {
     setIsSaving(true);
@@ -25,6 +30,33 @@ export default function SettingsPage() {
       alert("Error al guardar");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    if (newPassword.length < 8) {
+      alert("La nueva contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+    setIsUpdatingPassword(true);
+    try {
+      await updatePassword({
+        current_password: currentPassword,
+        new_password: newPassword,
+        new_password_confirmation: confirmPassword,
+      });
+      alert("Contraseña actualizada correctamente");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch {
+      alert("Error al actualizar la contraseña. Verificá que la contraseña actual sea correcta.");
+    } finally {
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -80,10 +112,27 @@ export default function SettingsPage() {
         <Card padding="lg" className="max-w-md">
           <h2 className="font-heading text-lg mb-4">Cambiar contraseña</h2>
           <div className="space-y-4">
-            <Input label="Contraseña actual" type="password" />
-            <Input label="Nueva contraseña" type="password" />
-            <Input label="Confirmar nueva contraseña" type="password" />
-            <Button>Actualizar contraseña</Button>
+            <Input
+              label="Contraseña actual"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <Input
+              label="Nueva contraseña"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <Input
+              label="Confirmar nueva contraseña"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <Button onClick={handleUpdatePassword} isLoading={isUpdatingPassword}>
+              Actualizar contraseña
+            </Button>
           </div>
         </Card>
       )}

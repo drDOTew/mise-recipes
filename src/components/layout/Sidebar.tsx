@@ -21,7 +21,7 @@ const navItems = [
 
 export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { list: tagsQuery } = useTags();
   const tags = tagsQuery.data || [];
 
@@ -96,12 +96,20 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
         {/* User info */}
         {user && (
-          <div className="p-4 border-t border-border flex items-center gap-3">
-            <Avatar name={user.name} size="sm" />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-text-primary truncate">{user.name}</p>
-              <p className="text-xs text-text-muted capitalize">{user.plan}</p>
+          <div className="p-4 border-t border-border">
+            <div className="flex items-center gap-3 mb-3">
+              <Avatar name={user.name} size="sm" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-primary truncate">{user.name}</p>
+                <p className="text-xs text-text-muted capitalize">{user.plan}</p>
+              </div>
             </div>
+            <button
+              onClick={() => logout()}
+              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+            >
+              Cerrar sesión
+            </button>
           </div>
         )}
       </aside>

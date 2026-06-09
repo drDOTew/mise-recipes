@@ -1,23 +1,43 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { api } from "@/lib/api";
+import { endpoints } from "@/lib/endpoints";
 import { RecipeHero } from "@/components/recipes/RecipeHero";
 import { RecipeMeta } from "@/components/recipes/RecipeMeta";
 import { TagList } from "@/components/recipes/TagList";
 import { IngredientList } from "@/components/recipes/IngredientList";
 import { StepsList } from "@/components/recipes/StepsList";
+import { ScaleControl } from "@/components/recipes/ScaleControl";
 import { Spinner } from "@/components/ui/Spinner";
-import { Card } from "@/components/ui/Card";
-import { usePublicRecipe } from "@/hooks/usePublicRecipe";
+import type { Recipe } from "@/lib/types";
 
 export default function PublicRecipePage() {
   const params = useParams();
   const token = params.token as string;
-  const { data: recipe, isLoading, error } = usePublicRecipe(token);
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [scale, setScale] = useState(1);
 
-  if (isLoading) {
+  useEffect(() => {
+    async function fetchRecipe() {
+      try {
+        const res = await api.get<{ data: Recipe }>(endpoints.public.recipe(token));
+        setRecipe(res.data);
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRecipe();
+  }, [token]);
+
+  if (loading) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen">
         <Spinner size="lg" />
       </div>
     );
@@ -25,90 +45,65 @@ export default function PublicRecipePage() {
 
   if (error || !recipe) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center p-4">
-        <Card padding="lg" className="max-w-md text-center">
-          <h1 className="font-heading text-2xl mb-4">Receta no encontrada</h1>
-          <p className="text-text-secondary">
-            Esta receta ya no está disponible o el link es inválido.
-          </p>
-        </Card>
+      <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+        <span className="text-6xl mb-6">🔍</span>
+        <h1 className="font-heading text-2xl text-text-primary mb-2">
+          Receta no encontrada
+        </h1>
+        <p className="text-text-secondary">
+          Esta receta no existe o ya no está disponible.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-bg py-12 px-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Hero */}
-        <div className="bg-accent-bg rounded-lg p-12 text-center text-6xl mb-8">
-          🍝
-        </div>
-
-        {/* Title and meta */}
-        <div className="text-center mb-8">
-          <h1 className="font-heading text-3xl text-text-primary mb-3">{recipe.title}</h1>
-          <RecipeMeta
-            prepTime={recipe.prep_time_minutes}
-            cookTime={recipe.cook_time_minutes}
-            servings={recipe.servings}
-            difficulty={recipe.difficulty}
-          />
-          {recipe.tags.length > 0 && (
-            <div className="flex justify-center mt-3">
-              <TagList tags={recipe.tags} />
-            </div>
-          )}
-        </div>
-
-        {/* Description */}
-        {recipe.description && (
-          <p className="text-text-secondary text-center mb-8 leading-relaxed">
-            {recipe.description}
-          </p>
-        )}
-
-        {/* Ingredients */}
-        <div className="mb-8">
-          <h2 className="font-heading text-xl text-text-primary mb-4">Ingredientes</h2>
-          <Card padding="md">
-            <ul className="space-y-2">
-              {recipe.ingredients.map((ing, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-accent">•</span>
-                  <span>
-                    {ing.quantity} {ing.unit} {ing.name}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </div>
-
-        {/* Steps */}
-        <div className="mb-12">
-          <h2 className="font-heading text-xl text-text-primary mb-4">Pasos</h2>
-          <ol className="space-y-4">
-            {recipe.steps.map((step, i) => (
-              <li key={i} className="flex gap-3">
-                <span className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
-                  {i + 1}
-                </span>
-                <p className="flex-1 leading-relaxed pt-1">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center pt-8 border-t border-border">
-          <p className="text-text-muted text-sm">
-            Receta creada con{" "}
-            <a href="/" className="text-accent hover:underline">
-              Mise
-            </a>
-          </p>
-        </div>
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="mb-6">
+        <p className="text-xs text-text-muted uppercase tracking-wide mb-1">
+          Receta compartida
+        </p>
+        <RecipeHero emoji={recipe.emoji} />
+        <h1 className="font-heading text-3xl mt-4">{recipe.title}</h1>
       </div>
+
+      <RecipeMeta
+        prepTime={recipe.prep_time_minutes}
+        cookTime={recipe.cook_time_minutes}
+        servings={recipe.servings}
+        difficulty={recipe.difficulty}
+      />
+      {recipe.tags.length > 0 && <TagList tags={recipe.tags} className="mt-3" />}
+
+      {recipe.description && (
+        <p className="text-text-secondary leading-relaxed mt-6">{recipe.description}</p>
+      )}
+
+      <div className="mt-6 mb-4">
+        <label className="text-sm text-text-secondary mb-2 block">Porciones</label>
+        <ScaleControl
+          value={recipe.servings * scale}
+          min={1}
+          max={99}
+          onChange={(v) => setScale(v / recipe.servings)}
+        />
+      </div>
+
+      <div className="space-y-6 mt-8">
+        <IngredientList
+          ingredients={recipe.ingredients}
+          scaleFactor={scale}
+          originalServings={recipe.servings}
+        />
+        <StepsList steps={recipe.steps} />
+      </div>
+
+      <footer className="mt-12 pt-6 border-t border-border text-center">
+        <p className="text-sm text-text-muted">
+          Hecho con <span className="text-red-400">♥</span> por Mise
+        </p>
+      </footer>
     </div>
   );
 }
