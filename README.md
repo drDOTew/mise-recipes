@@ -4,6 +4,8 @@ Your digital cookbook, always ready.
 
 **Mise** (as in *mise en place*) is a web app to create, organize, and share recipes. Built for home cooks who want their collection at hand, wherever they are.
 
+> 🎯 **Live demo:** [mise-frontend-wine.vercel.app](https://mise-frontend-wine.vercel.app)
+
 ## Stack
 
 - **Framework:** Next.js 15 (App Router)
