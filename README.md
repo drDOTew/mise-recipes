@@ -1,32 +1,32 @@
 # Mise.
 
-Tu recetario digital, siempre listo.
+Your digital cookbook, always ready.
 
-**Mise** (como *mise en place*) es una app web para crear, organizar y compartir recetas. Pensada para cocineros caseros que quieren tener su colección siempre a mano.
+**Mise** (as in *mise en place*) is a web app to create, organize, and share recipes. Built for home cooks who want their collection at hand, wherever they are.
 
 ## Stack
 
 - **Framework:** Next.js 15 (App Router)
-- **Lenguaje:** TypeScript
-- **Estilos:** Tailwind CSS
-- **Formularios:** React Hook Form + Zod
-- **Estado y datos:** TanStack Query
-- **Auth:** Laravel Sanctum (token vía cookie)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Forms:** React Hook Form + Zod
+- **State & Data:** TanStack Query
+- **Auth:** Laravel Sanctum (token via cookie)
 
-## Funcionalidades
+## Features
 
-- Registro e inicio de sesión
-- Dashboard con búsqueda y filtros por categoría
-- Crear, editar y eliminar recetas
-- Ingredientes, pasos, tags y selector de emoji
-- Escalado de porciones
-- Vista detalle con modo lectura
-- Compartir receta (link público)
-- Tags dinámicos desde el backend
-- Sidebar responsive con navegación
-- Cambio de contraseña
+- Sign up & sign in
+- Dashboard with search and category filters
+- Create, edit, and delete recipes
+- Ingredients, steps, tags, and emoji picker
+- Serving scaling
+- Detail view with reading mode
+- Share recipe (public link)
+- Dynamic tags from the backend
+- Responsive sidebar navigation
+- Password change
 
-## Empezar
+## Getting started
 
 ```bash
 git clone https://github.com/drDOTew/mise-frontend
@@ -34,13 +34,13 @@ cd mise-frontend
 npm install
 ```
 
-Creá `.env.local`:
+Create `.env.local`:
 
 ```env
-NEXT_PUBLIC_API_URL=https://tu-backend.com/api/v1
+NEXT_PUBLIC_API_URL=https://your-backend.com/api/v1
 ```
 
-Desarrollo:
+Development:
 
 ```bash
 npm run dev
@@ -54,8 +54,8 @@ npm run build
 
 ## Deploy
 
-La app está deployada en Vercel. Solo conectá el repo y seteá `NEXT_PUBLIC_API_URL`.
+The app is deployed on Vercel. Just connect the repo and set `NEXT_PUBLIC_API_URL` as an environment variable.
 
-## Licencia
+## License
 
 MIT
