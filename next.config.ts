@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
+        protocol: "https",
+        hostname: "ivory-cormorant-194899.hostingersite.com",
       },
     ],
   },
