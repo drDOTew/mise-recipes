@@ -31,7 +31,7 @@ Your digital cookbook, always ready.
 ## Getting started
 
 ```bash
-git clone https://github.com/drDOTew/mise-frontend
+git clone https://github.com/drDOTew/mise-recipes
 cd mise-frontend
 npm install
 ```
