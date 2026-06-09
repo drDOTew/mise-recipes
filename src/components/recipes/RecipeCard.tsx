@@ -20,7 +20,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <Card variant="hover" padding="none" className="cursor-pointer" onClick={handleClick}>
-      <RecipeHero />
+      <RecipeHero emoji={recipe.emoji} />
       <div className="p-4">
         <h3 className="font-heading text-lg text-text-primary mb-2">{recipe.title}</h3>
         <RecipeMeta

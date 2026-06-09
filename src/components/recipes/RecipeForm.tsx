@@ -20,7 +20,7 @@ interface RecipeFormProps {
 }
 
 export function RecipeForm({ initialValues, onSubmit, isLoading }: RecipeFormProps) {
-  const [selectedEmoji, setSelectedEmoji] = useState<string>("🍝");
+  const [selectedEmoji, setSelectedEmoji] = useState<string>(initialValues?.emoji || "🍝");
   const { list: tagsQuery, create: createTag } = useTags();
   const [newTagName, setNewTagName] = useState("");
   const [isCreatingTag, setIsCreatingTag] = useState(false);
@@ -102,8 +102,12 @@ export function RecipeForm({ initialValues, onSubmit, isLoading }: RecipeFormPro
     }
   };
 
+  const handleFormSubmit = (data: RecipePayload) => {
+    onSubmit({ ...data, emoji: selectedEmoji });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {/* Title */}
       <Input
         label="Nombre *"

@@ -36,6 +36,7 @@ export interface Recipe {
   prep_time_minutes: number | null;
   cook_time_minutes: number | null;
   difficulty: "easy" | "medium" | "hard" | null;
+  emoji: string | null;
   image_url: string | null;
   is_public: boolean;
   share_url: string | null;
@@ -55,6 +56,7 @@ export interface RecipePayload {
   prep_time_minutes?: number;
   cook_time_minutes?: number;
   difficulty?: "easy" | "medium" | "hard";
+  emoji?: string;
   source_url?: string;
   ingredients: { name: string; quantity: string; unit: string | null; sort_order: number }[];
   steps: { body: string; sort_order: number }[];

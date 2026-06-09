@@ -82,7 +82,7 @@ export default function RecipeDetailPage() {
       <div className="grid lg:grid-cols-[1fr_280px] gap-6">
         {/* Main content */}
         <div className="space-y-6">
-          <RecipeHero emoji={recipe.description ? "🍝" : undefined} />
+          <RecipeHero emoji={recipe.emoji} />
 
           <div>
             <h1 className="font-heading text-3xl text-text-primary mb-3">{recipe.title}</h1>

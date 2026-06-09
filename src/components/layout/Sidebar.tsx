@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
 import { useAuth } from "@/hooks/useAuth";
+import { useTags } from "@/hooks/useTags";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -22,6 +22,8 @@ const navItems = [
 export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { user } = useAuth();
+  const { list: tagsQuery } = useTags();
+  const tags = tagsQuery.data || [];
 
   return (
     <>
@@ -71,24 +73,26 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           })}
         </nav>
 
-        {/* Tags section placeholder */}
-        <div className="px-4 py-2 border-t border-border">
-          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">
-            Categorías
-          </h3>
-          <div className="flex flex-wrap gap-1">
-            {["Italiana", "Argentina", "Rápidas"].map((tag) => (
-              <Link
-                key={tag}
-                href={`/dashboard?tag=${tag}`}
-                className="px-2 py-1 text-xs bg-gray-100 text-text-secondary rounded-full hover:bg-gray-200"
-                onClick={onClose}
-              >
-                {tag}
-              </Link>
-            ))}
+        {/* Tags section */}
+        {tags.length > 0 && (
+          <div className="px-4 py-2 border-t border-border">
+            <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">
+              Categorías
+            </h3>
+            <div className="flex flex-wrap gap-1">
+              {tags.map((tag) => (
+                <Link
+                  key={tag.id}
+                  href={`/dashboard?tag=${encodeURIComponent(tag.name)}`}
+                  className="px-2 py-1 text-xs bg-gray-100 text-text-secondary rounded-full hover:bg-gray-200"
+                  onClick={onClose}
+                >
+                  {tag.name}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* User info */}
         {user && (

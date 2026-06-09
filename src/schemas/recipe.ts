@@ -19,6 +19,7 @@ export const createRecipeSchema = z.object({
   prep_time_minutes: z.number().min(1).max(999).optional().nullable(),
   cook_time_minutes: z.number().min(1).max(999).optional().nullable(),
   difficulty: z.enum(["easy", "medium", "hard"]).optional().nullable(),
+  emoji: z.string().max(10).optional(),
   source_url: z.string().url("URL inválida").optional().nullable(),
   ingredients: z.array(ingredientSchema).min(1, "Mínimo 1 ingrediente"),
   steps: z.array(stepSchema).min(1, "Mínimo 1 paso"),
