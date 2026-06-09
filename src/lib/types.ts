@@ -51,13 +51,13 @@ export interface Recipe {
 // Payload types
 export interface RecipePayload {
   title: string;
-  description?: string;
+  description?: string | null;
   servings: number;
-  prep_time_minutes?: number;
-  cook_time_minutes?: number;
-  difficulty?: "easy" | "medium" | "hard";
+  prep_time_minutes?: number | null;
+  cook_time_minutes?: number | null;
+  difficulty?: "easy" | "medium" | "hard" | null;
   emoji?: string;
-  source_url?: string;
+  source_url?: string | null;
   ingredients: { name: string; quantity: string; unit: string | null; sort_order: number }[];
   steps: { body: string; sort_order: number }[];
   tag_ids?: number[];
