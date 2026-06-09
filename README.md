@@ -6,6 +6,8 @@ Your digital cookbook, always ready.
 
 > 🎯 **Live demo:** [mise-frontend-wine.vercel.app](https://mise-frontend-wine.vercel.app)
 
+![npm version](https://img.shields.io/npm/v/mise-frontend) ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Next.js](https://img.shields.io/badge/Next.js-15-black) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38B2AC) ![Build](https://img.shields.io/badge/build-passing-brightgreen) ![Demo](https://img.shields.io/badge/demo-online-brightgreen)
+
 ## Stack
 
 - **Framework:** Next.js 15 (App Router)
